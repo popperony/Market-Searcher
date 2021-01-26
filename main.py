@@ -1,12 +1,16 @@
 from fastapi import FastAPI
 from google_search_engine import GESearch
 
+
+
+
 app = FastAPI()
 
 
 @app.get("/{query}")
 def index(query: str):
-    return {'Key': GESearch(query)}
+    value = GESearch(query)
+    return {'Key': value}
 
 
 @app.get("/ins/{item}/{discription}")
