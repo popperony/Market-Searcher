@@ -1,7 +1,5 @@
 from fastapi import FastAPI
-from google_search_engine import GESearch
-
-
+from parsers import ozon_parsing, google_engine
 
 
 app = FastAPI()
@@ -9,8 +7,8 @@ app = FastAPI()
 
 @app.get("/{query}")
 def index(query: str):
-    value = GESearch(query)
-    return {'Key': value}
+    value = query
+    return {'Google': value}
 
 
 @app.get("/ins/{item}/{discription}")
