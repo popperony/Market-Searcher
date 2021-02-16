@@ -25,8 +25,8 @@ def parsing(word):
 
 # def google_engine(query: str):
 #     url = 'https://www.googleapis.com/customsearch/v1'
-#     API_KEY = 'AIzaSyDO8Be4yBVOht6rjpDCNZ17XP3RP5NwvM4'
-#     se_ID = '0eed1a6041c25ae17'
+#     API_KEY = 'AIzaSyDO8Be4yBVOht6rjpDCNZ17XP3RP5NwvM4' (не актуален)
+#     se_ID = '0eed1a6041c25ae17' (не актуален)
 #     payload = {'key': API_KEY, 'cx': se_ID, 'q': query}
 #     response = requests.get(url, params=payload)
 #     result = []
