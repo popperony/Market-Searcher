@@ -23,7 +23,7 @@ http://127.0.0.1:8000/слово
 http://127.0.0.1:8000/слово/описание
 ```
 
-![alt tag](https://disk.yandex.ru/i/oHvJ6zttW-e4pw)
+Пример ответа: (https://disk.yandex.ru/i/oHvJ6zttW-e4pw)
 
 Среднее время ответа сервера из-за парсинга - 10 секунд
 
