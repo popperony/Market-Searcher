@@ -1,5 +1,5 @@
 from fastapi import FastAPI
-from parsers import ozon_parsing, google_engine
+from parsers import parsing
 
 
 app = FastAPI()
@@ -7,12 +7,12 @@ app = FastAPI()
 
 @app.get("/{query}")
 def index(query: str):
-    value = query
-    return {'Google': value}
+    response = parsing(query)
+    return {'Запрос': query, 'Ссылка на картинку': response[0], 'Цена': response[1]}
 
 
-@app.get("/ins/{item}/{discription}")
+@app.get("/{item}/{discription}")
 def read_item(item: str, discription: str):
-    return {"item" : item, "discription": discription}
-
+    response = parsing(discription)
+    return {'Описание': discription, 'Ссылка на картинку': response[0], 'Цена': response[1]}
 
