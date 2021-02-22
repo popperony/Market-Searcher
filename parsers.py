@@ -15,12 +15,28 @@ def parsing(word):
     search.click()
     search.send_keys(word)
     search.submit()
-    time.sleep(3)
-    html = browser.page_source
-    soup = BeautifulSoup(html, 'html5lib')
-    img_url = soup.find("img", {"class": "_2DyHt9sctH"})
-    price = soup.find("div", {"class": "_3NaXxl-HYN _3f2ZtYT7NH _1f_YBwo4nE"})
-    return 'https:' + img_url["src"], price.text
+    time.sleep(5)
+    search = browser.find_elements_by_class_name('_2DyHt9sctH')
+    count = 0
+    images = []
+    for i in search:
+        if count == 3:
+            break
+        image = i.get_attribute('src')
+        images.append(image)
+        count += 1
+    avg_price = []
+    for j in range(5, 0, -1):
+        search = browser.find_element_by_css_selector(f'article._1_IxNTwqll:nth-child({j}) > div:nth-child(4) > div:nth-child(1) > div:nth-child(1) > div:nth-child(1) > div:nth-child(1) > a:nth-child(1) > div:nth-child(1) > span:nth-child(1) > span:nth-child(1)')  # NOQA E501
+        avg_price.append(int(search.text.replace(' ', '')))
+    return images, sum(avg_price)/len(avg_price)
+
+
+    # html = browser.page_source
+    # soup = BeautifulSoup(html, 'html5lib')
+    # img_url = soup.find("img", {"class": "_2DyHt9sctH"})
+    # price = soup.find("div", {"class": "_3NaXxl-HYN _3f2ZtYT7NH _1f_YBwo4nE"})
+    # return 'https:' + img_url["src"], price.text
 
 
 # def google_engine(query: str):
