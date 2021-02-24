@@ -43,6 +43,7 @@ def read_item(query: str, discription: str):
             'Error': 'no result or parser was blocked'
             }
 
+
 @app.post("/query")
 def add_queries(item: Queries):
     print(item.get('query'))
