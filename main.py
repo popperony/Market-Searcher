@@ -1,5 +1,7 @@
 from fastapi import FastAPI
+
 from parsers import parsing
+from models import Queries
 
 
 # uvicorn main:app --reload
@@ -9,10 +11,21 @@ app = FastAPI()
 @app.get("/{query}")
 def index(query: str):
     response = parsing(query)
-    return {'Request': query, 'link_image_1': response[0][0], 'link_image_2': response[0][1], 'link_image_3': response[0][2], 'average_price': response[1]}
+    try:
+        return {'Request': query, 'link_image_1': response[0][0], 'link_image_2': response[0][1], 'link_image_3': response[0][2], 'average_price': response[1]}
+    except IndexError:
+        return {'Request': query,'Error': 'Ничего не найдено или парсер был блокирован'}
 
 
-@app.get("/{item}/{discription}")
-def read_item(item: str, discription: str):
+@app.get("/{query}/{discription}")
+def read_item(query: str, discription: str):
     response = parsing(discription)
-    return {'Описание': discription, 'Ссылка на картинку': response[0], 'Цена': response[1]}
+    try:
+        return {'Request': discription, 'link_image_1': response[0][0], 'link_image_2': response[0][1], 'link_image_3': response[0][2], 'average_price': response[1]}
+    except IndexError:
+        return {'Request': discription,'Error': 'Ничего не найдено или парсер был блокирован'}
+
+@app.post("/query")
+def add_queries(item: Queries):
+    print(item.get('query'))
+    return item

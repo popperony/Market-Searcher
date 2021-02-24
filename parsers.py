@@ -6,7 +6,7 @@ from selenium import common
 def parsing(word):
     firefoxdriver = r'./drivers/geckodriver.exe'
     options = webdriver.FirefoxOptions()
-    options.headless = True
+    # options.headless = True
     options.set_preference('general.useragent.override', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:85.0) Gecko/20100101 Firefox/85.0')  # NOQA E501
     options.set_preference('dom.webdriver.enabled', False)
     browser = webdriver.Firefox(executable_path=firefoxdriver, options=options)
@@ -15,7 +15,7 @@ def parsing(word):
     search.click()
     search.send_keys(word)
     search.submit()
-    time.sleep(3)
+    time.sleep(5)
     search = browser.find_elements_by_class_name('_2DyHt9sctH')
     count = 0
     images = []
