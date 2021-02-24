@@ -9,7 +9,7 @@ app = FastAPI()
 @app.get("/{query}")
 def index(query: str):
     response = parsing(query)
-    return {'Запрос': query, 'Ссылка на картинку 1': response[0][0], 'Ссылка на картинку 2': response[0][1], 'Ссылка на картинку 3': response[0][2], 'Средняя цена': response[1]}
+    return {'Request': query, 'link_image_1': response[0][0], 'link_image_2': response[0][1], 'link_image_3': response[0][2], 'average_price': response[1]}
 
 
 @app.get("/{item}/{discription}")

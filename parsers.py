@@ -1,68 +1,52 @@
 import time
 from selenium import webdriver
+from selenium import common
 
 
 def parsing(word):
     firefoxdriver = r'./drivers/geckodriver.exe'
     options = webdriver.FirefoxOptions()
     options.headless = True
+    options.set_preference('general.useragent.override', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:85.0) Gecko/20100101 Firefox/85.0')  # NOQA E501
+    options.set_preference('dom.webdriver.enabled', False)
     browser = webdriver.Firefox(executable_path=firefoxdriver, options=options)
     browser.get('https://market.yandex.ru/')
     search = browser.find_element_by_id('header-search')
     search.click()
     search.send_keys(word)
     search.submit()
-    time.sleep(5)
+    time.sleep(3)
     search = browser.find_elements_by_class_name('_2DyHt9sctH')
     count = 0
     images = []
-    for i in search:
-        if count == 3:
-            break
-        image = i.get_attribute('src')
-        images.append(image)
-        count += 1
+    try:
+        for i in search:
+            if count == 3:
+                break
+            image = i.get_attribute('src')
+            images.append(image)
+            count += 1
+    except Exception:
+        print('Image not found.')
     avg_price = []
-    for j in range(5, 0, -1):
-        search = browser.find_element_by_css_selector(f'article._1_IxNTwqll:nth-child({j}) > div:nth-child(4) > div:nth-child(1) > div:nth-child(1) > div:nth-child(1) > div:nth-child(1) > a:nth-child(1) > div:nth-child(1) > span:nth-child(1) > span:nth-child(1)')  # NOQA E501
-        avg_price.append(int(search.text.replace(' ', '')))
-    return images, sum(avg_price)/len(avg_price)
-
-
-    # html = browser.page_source
-    # soup = BeautifulSoup(html, 'html5lib')
-    # img_url = soup.find("img", {"class": "_2DyHt9sctH"})
-    # price = soup.find("div", {"class": "_3NaXxl-HYN _3f2ZtYT7NH _1f_YBwo4nE"})
-    # return 'https:' + img_url["src"], price.text
-
-
-# def google_engine(query: str):
-#     url = 'https://www.googleapis.com/customsearch/v1'
-#     API_KEY = 'AIzaSyDO8Be4yBVOht6rjpDCNZ17XP3RP5NwvM4'
-#     se_ID = '0eed1a6041c25ae17'
-#     payload = {'key': API_KEY, 'cx': se_ID, 'q': query}
-#     response = requests.get(url, params=payload)
-#     result = []
-#     for i in range(3):
-#         result.append(response.json()['items'][i]['pagemap']['cse_image'][0]['src'])
-#     return result
-
-
-# def parsing(word):
-#     firefoxdriver = r'./drivers/geckodriver.exe'
-#     options = webdriver.FirefoxOptions()
-#     options.set_preference('general.useragent.override', user_agent)
-#     options.set_preference('dom.webdriver.enabled', False)
-#     options.headless = True
-#     browser = webdriver.Firefox(executable_path=firefoxdriver, options=options)
-#     # browser.get('https://browser-info.ru/')
-#     browser.get('https://market.yandex.ru/')
-#     # browser.get('https://www.ozon.ru/')
-#     search = browser.find_element_by_id('header-search')
-#     # search = browser.find_element_by_class_name('b7i5')
-#     search.click()
-#     search.send_keys(word)
-#     search.submit()
-#     time.sleep(3)
-#     result = search.find_element_by_class_name('_1_IxNTwqll _1JtmTvRG7Z cia-vs cia-cs')
-#     return result
+    try:
+        for j in range(5, 0, -1):
+            search = browser.find_element_by_xpath(f'/html/body/div[2]/div[3]/div[3]/div[4]/div/div[1]/div/div/div/article[{j}]/div[3]/div/div/a/div/span/span[1]')  # NOQA E501
+            avg_price.append(int(search.text.replace(' ', '')))
+        return images, sum(avg_price)/len(avg_price)
+    except common.exceptions.NoSuchElementException:
+        try:
+            print('Element not found, change loop.')
+            for k in range(5, 0, -1):
+                search = browser.find_element_by_xpath(f'/html/body/div[2]/div[3]/div[3]/div[5]/div/div[1]/div/div/div/article[{k}]/div[4]/div/div[1]/div/div/a/div/span/span[1]')  # NOQA E501
+                avg_price.append(int(search.text.replace(' ', '')))
+            return images, sum(avg_price)/len(avg_price)
+        except common.exceptions.NoSuchElementException:
+            try:
+                print('Element not found, change loop.')
+                for o in range(5, 0, -1):
+                    search = browser.find_element_by_xpath(f'/html/body/div[2]/div[3]/div[3]/div[5]/div/div[1]/div/div/div/article[{o}]/div[3]/div/div/a/div/span/span[1]')  # NOQA E501
+                    avg_price.append(int(search.text.replace(' ', '')))
+                return images, sum(avg_price)/len(avg_price)
+            except common.exceptions.NoSuchElementException:
+                return 'No results were found with this request.'
